@@ -20,6 +20,18 @@ public class Main {
         }
     }
 
+    private static boolean isValidDepth(Node parent) {
+        int depth = 1;
+        while (true) {
+            if (parent.max_depth <= depth) return false;
+            if (parent.p_id == -1) break;
+
+            parent = nodes.get(parent.p_id);
+            depth++;
+        }
+        return true;
+    }
+
     private static void addNode(int m_id, int p_id, int color, int max_depth) {
         if (p_id == -1) {
             nodes.put(m_id, new Node(m_id, p_id, color, max_depth));
@@ -27,7 +39,7 @@ public class Main {
         }
 
         Node parent = nodes.get(p_id);
-        if (parent.max_depth > 1) {
+        if (isValidDepth(parent)) {
             Node newNode = new Node(m_id, p_id, color, max_depth);
             parent.children.add(newNode);
             nodes.put(m_id, newNode);
